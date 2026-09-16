@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>랜덤플레이푸드 (랜플푸) - 오늘 뭐 먹지?</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Pretendard', 'Malgun Gothic', sans-serif;
+        }
+
+        body {
+            background-color: #f7f9fc;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            background: #ffffff;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            padding: 40px 30px;
+            text-align: center;
+            max-width: 450px;
+            width: 100%;
+        }
+
+        h1 {
+            color: #ff5722;
+            font-size: 2rem;
+            margin-bottom: 8px;
+        }
+
+        .sub-title {
+            color: #666;
+            font-size: 0.95rem;
+            margin-bottom: 25px;
+        }
+
+        .food-display {
+            background-color: #fff3e0;
+            border: 2px dashed #ff9800;
+            border-radius: 15px;
+            height: 140px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #e65100;
+            margin-bottom: 25px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-random {
+            background-color: #ff5722;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(255, 87, 34, 0.3);
+            transition: background-color 0.2s, transform 0.1s;
+            width: 100%;
+        }
+
+        .btn-random:hover {
+            background-color: #e64a19;
+        }
+
+        .btn-random:active {
+            transform: scale(0.98);
+        }
+
+        /* 배경 음악 관련 스타일 */
+        .music-box {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+
+        .music-title {
+            font-size: 0.85rem;
+            color: #888;
+            margin-bottom: 10px;
+        }
+
+        /* 유튜브 플레이어 숨김 처리 */
+        .youtube-hidden {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            overflow: hidden;
+            opacity: 0;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>🎲 랜덤플레이푸드</h1>
+        <p class="sub-title">오늘 뭐 먹을지 고민될 땐? <b>랜플푸!</b></p>
+        
+        <div class="food-display" id="foodDisplay">
+            버튼을 눌러주세요! 🍱
+        </div>
+
+        <button class="btn-random" onclick="pickRandomFood()">오늘의 저녁 메뉴 뽑기!</button>
+
+        <!-- 배경음악 영역 -->
+        <div class="music-box">
+            <p class="music-title">🎵 BGM: 티키틱 - 뭐 먹을지 고민될 때 부르는 노래</p>
+            <!-- 유튜브 배경음악 플레이어 (화면에는 보이지 않음) -->
+            <iframe class="youtube-hidden" 
+                    src="https://www.youtube.com/embed/Pyr4HUpT1tg?enablejsapi=1&autoplay=1&loop=1&playlist=Pyr4HUpT1tg" 
+                    allow="autoplay">
+            </iframe>
+        </div>
+    </div>
+
+    <script>
+        // 메뉴 목록 데이터
+        const foodList = [
+            "김치찌개 🥘", "삼겹살 🥩", "치킨 🍗", "떡볶이 🍢",
+            "초밥 🍣", "짜장면 🍜", "파스타 🍝", "피자 🍕",
+            "돈까스 🍛", "햄버거 🍔", "족발/보쌈 🍖", "마라탕 🥘",
+            "부대찌개 🍲", "곱창 🥘", "쌀국수 🍜", "제육볶음 🥩"
+        ];
+
+        let isSpinning = false;
+
+        function pickRandomFood() {
+            if (isSpinning) return;
+            isSpinning = true;
+
+            const display = document.getElementById('foodDisplay');
+            let counter = 0;
+            
+            // 랜덤하게 메뉴가 빠르게 바뀌는 효과
+            const timer = setInterval(() => {
+                const randomIndex = Math.floor(Math.random() * foodList.length);
+                display.innerText = foodList[randomIndex];
+                counter++;
+
+                if (counter > 15) {
+                    clearInterval(timer);
+                    // 최종 선택
+                    const finalIndex = Math.floor(Math.random() * foodList.length);
+                    display.innerText = `👉 ${foodList[finalIndex]} 👈`;
+                    isSpinning = false;
+                }
+            }, 80);
+        }
+    </script>
+</body>
+</html>
